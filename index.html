@@ -5,39 +5,44 @@
     <script src="data_generator.js"></script>
   </head>
   <body>
-    <script>
+    <h1>Happy Chat</h1>
+    <span>
+      <p>Chat!!</p>
+    </span>
 
+    <script>
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('<h1>Hello Chat</h1>');
+        var $span = $('span');
+        //$body.html('<h1>Hello Chat</h1>');
 
-
-        //append each tweet on body
         var showTweetHelper = function(tweet){
           var $tweet = $('<div></div>');
           $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-        };
-        var showAllTweetsHelper = function(){
-          var index = streams.home.length - 1;
-          while(index >= 0){
-            var tweet = streams.home[index];
-            console.log(tweet);
-            showTweetHelper(tweet);
-            index -= 1;
-          }          
+          $tweet.appendTo($span);
         };
 
-        //append new tweets when generated\
-     //   showAllTweetsHelper();
-        var scheduleShowTweets = function(){
-          $('div').html("");
-          showAllTweetsHelper();
-          setTimeout(scheduleShowTweets, 3000);
+        var showAllTweetsHelper = function(){
+          var index = streams.home.length- 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            showTweetHelper(tweet);
+            index --; 
+          }          
         };
+        var scheduleShowTweets = function(){
+          console.log($span);
+          $span.empty();
+          showAllTweetsHelper();
+          setTimeout(scheduleShowTweets, 4000);
+        };
+
         scheduleShowTweets();
+        //only show 10 tweets in one page
+      
       });
 
     </script>
+    
   </body>
 </html>
