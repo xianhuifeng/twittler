@@ -5,13 +5,13 @@
 
 // set up data structures
 window.streams = {};
-streams.home = [];
-streams.users = {};
+streams.home = [];//store newTweets
+streams.users = {};//store
 streams.users.shawndrost = [];
 streams.users.sharksforcheap = [];
 streams.users.mracus = [];
 streams.users.douglascalhoun = [];
-window.users = Object.keys(streams.users);
+window.users = Object.keys(streams.users);//all users key(here are the names)
 
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
@@ -48,9 +48,11 @@ var generateRandomTweet = function(){
 
 for(var i = 0; i < 10; i++){
   generateRandomTweet();
+  console.log("generateRandomTweet get called.");
 }
 
 var scheduleNextTweet = function(){
+  console.log("scheduleNextTweet get called");
   generateRandomTweet();
   setTimeout(scheduleNextTweet, Math.random() * 1500);
 };

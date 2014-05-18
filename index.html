@@ -9,17 +9,33 @@
 
       $(document).ready(function(){
         var $body = $('body');
-        $body.html('');
+        $body.html('<h1>Hello Chat</h1>');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
+
+        //append each tweet on body
+        var showTweetHelper = function(tweet){
           var $tweet = $('<div></div>');
           $tweet.text('@' + tweet.user + ': ' + tweet.message);
           $tweet.appendTo($body);
-          index -= 1;
-        }
+        };
+        var showAllTweetsHelper = function(){
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            console.log(tweet);
+            showTweetHelper(tweet);
+            index -= 1;
+          }          
+        };
 
+        //append new tweets when generated\
+     //   showAllTweetsHelper();
+        var scheduleShowTweets = function(){
+          $('div').html("");
+          showAllTweetsHelper();
+          setTimeout(scheduleShowTweets, 3000);
+        };
+        scheduleShowTweets();
       });
 
     </script>
