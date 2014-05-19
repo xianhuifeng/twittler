@@ -3,22 +3,38 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <style type="text/css">
+    span{
+      color: white;
+      display: inline-block;
+      width: 400px;
+      height: 300px;
+      } 
+    div{
+      background-color: black;
+      }
+    </style>
   </head>
   <body>
     <h1>Happy Chat</h1>
-    <span>
-      <p>Chat!!</p>
-    </span>
+    <span></span>
 
     <script>
       $(document).ready(function(){
+        console.log('testing-->script is working');
         var $body = $('body');
         var $span = $('span');
-        //$body.html('<h1>Hello Chat</h1>');
+        var $tweet;
+        var $user;
+        var $message;
 
+        //$body.html('<h1>Hello Chat</h1>');
         var showTweetHelper = function(tweet){
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
+          $tweet = $('<div></div>');
+          //$user = tweet.user;
+          $user = $('<div>tweet.user </div>')
+          $message = tweet.message;
+          $tweet.text('@' + $user + ': ' + $message);
           $tweet.appendTo($span);
         };
 
@@ -30,19 +46,17 @@
             index --; 
           }          
         };
+
         var scheduleShowTweets = function(){
-          console.log($span);
           $span.empty();
           showAllTweetsHelper();
-          setTimeout(scheduleShowTweets, 4000);
+          setTimeout(scheduleShowTweets, 3000);
         };
 
         scheduleShowTweets();
-        //only show 10 tweets in one page
-      
+
       });
 
     </script>
-    
   </body>
 </html>
