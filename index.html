@@ -3,60 +3,74 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
-    <style type="text/css">
-    span{
-      color: white;
-      display: inline-block;
-      width: 400px;
-      height: 300px;
-      } 
-    div{
-      background-color: black;
-      }
-    </style>
+    <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <h1>Happy Chat</h1>
-    <span></span>
+    <span id = "chat"></span>
+    <span id = "timeline"></span>
 
     <script>
       $(document).ready(function(){
-        console.log('testing-->script is working');
-        var $body = $('body');
-        var $span = $('span');
-        var $tweet;
-        var $user;
-        var $message;
-
-        //$body.html('<h1>Hello Chat</h1>');
-        var showTweetHelper = function(tweet){
-          $tweet = $('<div></div>');
-          //$user = tweet.user;
-          $user = $('<div>tweet.user </div>')
-          $message = tweet.message;
-          $tweet.text('@' + $user + ': ' + $message);
-          $tweet.appendTo($span);
+        $body = $('body');
+        $chat= $('#chat');
+        $timeline = $('#timeline');
+        var user;
+        var message;
+        var createdAt;
+        
+        var onClickUserHelper = function(){
+          $('.tweet').on('click', '.user', function(){
+            var fetchedUsername = $(this).text();
+            $(this).css("color","red");
+            scheduleShowTweets(streams.users[fetchedUsername],$timeline);          
+            stopShowTweets($chat);
+          });
         };
 
-        var showAllTweetsHelper = function(){
-          var index = streams.home.length- 1;
-          while(index >= 0){
-            var tweet = streams.home[index];
-            showTweetHelper(tweet);
-            index --; 
-          }          
+        var showTweet = function(tweet, id){
+          user = tweet.user;
+          message = tweet.message;
+          createdAt = tweet.created_at;
+          $tweet = $('<div class="tweet"></div>');
+          $user = $('<div class="user"></div>');
+          $message = $('<div class="message"></div>');
+          $createdAt = $('<div class="createdAt"></div>');
+
+          $createdAt.text(createdAt).appendTo($tweet);
+          $user.text(user).appendTo($tweet);
+          $message.text(message).appendTo($tweet);
+          $tweet.appendTo(id);
+          
+          onClickUserHelper();  
         };
 
-        var scheduleShowTweets = function(){
-          $span.empty();
-          showAllTweetsHelper();
-          setTimeout(scheduleShowTweets, 3000);
+        var showAllTweets = function(storage, id){
+          if(storage !== undefined){
+            var index = storage.length- 1;
+            while(index >= 0){
+              var tweet = storage[index];
+              showTweet(tweet, id);
+              index --; 
+            }          
+          }else{
+            var err  = 'No storage';
+            throw err;
+          }
         };
 
-        scheduleShowTweets();
+        var scheduleShowTweets = function(storage, id){
+          id.empty();
+          showAllTweets(storage, id);
+          setTimeout(function(){scheduleShowTweets(storage, id);}, 3000);
+        };
 
+        var stopShowTweets = function(id){
+          id.fadeOut('slow');
+        };
+
+        scheduleShowTweets(streams.home, $chat);
       });
-
     </script>
   </body>
 </html>
